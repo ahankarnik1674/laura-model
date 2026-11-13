@@ -1,7 +1,9 @@
-from loaders import all_returns
+#Quick check that the Ken French factor file loads correctly.
 
-returns = all_returns()
+from loaders import load_french
 
-print(returns.count())  # number of months of data for each ticker
-print(returns.tail())   # last 5 rows
-print(returns.shape)    # (rows, columns)
+factors = load_french("F-F_Research_Data_Factors.csv")
+
+print(factors.head())
+print(factors.tail())
+print(factors.shape)

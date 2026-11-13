@@ -1,4 +1,5 @@
 import pandas as pd
+import io
 
 LAST_FULL_MONTH = "2026-10-01"
 
@@ -23,3 +24,18 @@ def all_returns():
         series.append(monthly_returns(ticker))
 
     return pd.concat(series, axis=1, keys=TICKERS)
+
+def load_french(filename): 
+    """Reads a Ken French monthly file"""
+    with open(f"data/raw/{filename}") as f:
+        lines = f.readlines()  
+    
+    start = next(i for i, line in enumerate(lines) if line.startswith(","))
+    end = start + 1
+    while end < len(lines) and lines[end].strip() != "":
+        end += 1
+
+    table = pd.read_csv(io.StringIO("".join(lines[start:end])), index_col=0)
+    table = table.replace([-99.99, -999], float("nan")) 
+    table.index = pd.to_datetime(table.index.astype(str), format="%Y%m") 
+    return table / 100 
