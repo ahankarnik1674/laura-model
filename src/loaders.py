@@ -12,3 +12,14 @@ def load_prices(ticker):
 #Return each month's % change in price, e.g., 0.03 indicates +3%. 
 def monthly_returns(ticker):
     return load_prices(ticker).pct_change().dropna()
+
+#Our 8 holdings in the portfolio
+TICKERS = ["RSP", "VXUS", "TSM", "GOOGL", "TEAM", "MAR", "SPOT", "EDU"]
+
+def all_returns(): 
+    """Return table: per month, per ticker"""
+    series = []
+    for ticker in TICKERS: 
+        series.append(monthly_returns(ticker))
+
+    return pd.concat(series, axis=1, keys=TICKERS)

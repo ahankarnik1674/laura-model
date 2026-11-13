@@ -1,7 +1,7 @@
-from loaders import monthly_returns
+from loaders import all_returns
 
-r = monthly_returns("RSP")
+returns = all_returns()
 
-print(r.head())
-print(r.tail())
-print(len(r))
+print(returns.count())  # number of months of data for each ticker
+print(returns.tail())   # last 5 rows
+print(returns.shape)    # (rows, columns)
