@@ -1,7 +1,7 @@
-import pandas as pd
+from loaders import monthly_returns
 
-prices = pd.read_csv("data/raw/RSP.csv", parse_dates=["Date"])
+r = monthly_returns("RSP")
 
-print(prices.head())
-print(prices.tail())
-print(prices.shape)
+print(r.head())
+print(r.tail())
+print(len(r))
