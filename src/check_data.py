@@ -1,9 +1,10 @@
-"""Check how well our bonds cover each yearly payment."""
+"""Make the coverage chart."""
 
 from reserve import load_bonds, payment_coverage
+from plots import plot_coverage
 
 bonds = load_bonds()
 table = payment_coverage(bonds)
+plot_coverage(table, "figures/coverage.png")
 
-print(table.round({"target": 2, "cash": 2, "coverage": 3}))
-print("Overall coverage:", round(table["cash"].sum() / table["target"].sum(), 3))
+print("Saved figures/coverage.png")
