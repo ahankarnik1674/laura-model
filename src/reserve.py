@@ -3,6 +3,10 @@ import pandas as pd
 
 SETTLEMENT = pd.Timestamp("2026-11-06")
 
+PAYMENT = 50_000  # each yearly payment to the residency
+SCALE = 300_000 / 450_000  # our WInS portfolio is $300K; the real plan is $450K
+YEARS = range(2033, 2043)  # the ten payment years: 2033 through 2042
+
 def coupon_dates(maturity, after=SETTLEMENT):
     """List every coupon date after `after`, up to and including maturity."""
     dates = []
@@ -24,3 +28,20 @@ def load_bonds():
     bonds["cost"] = bonds["quantity"] * bonds["price_paid"]
     bonds["cash"] = bonds.apply(cash_at_maturity, axis=1)
     return bonds
+
+def payment_coverage(bonds): 
+    """For each payment year, compare cash from our bonds ot the scaled target"""
+    rows=[]
+    for year in YEARS: 
+        cash = 0.0
+        for _, bond in bonds.iterrows():
+            if pd.isna(bond["funds"]):  # this bond funds no payment
+                continue
+            years = [int(y) for y in str(bond["funds"]).split(";")]  # "2033;2034" -> [2033, 2034]
+            if year in years:
+                cash += bond["cash"] / len(years)  # split its cash evenly across its years
+        rows.append({"year": year, "target": PAYMENT * SCALE, "cash": cash})
+    table = pd.DataFrame(rows)
+    table["coverage"] = table["cash"] / table["target"]  
+    return table
+
