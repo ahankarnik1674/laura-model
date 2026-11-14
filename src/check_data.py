@@ -1,10 +1,8 @@
-"""Make the coverage chart."""
+"""Check the equity holdings and their weights."""
 
-from reserve import load_bonds, payment_coverage
-from plots import plot_coverage
+from growth import load_equities
 
-bonds = load_bonds()
-table = payment_coverage(bonds)
-plot_coverage(table, "figures/coverage.png")
+equities = load_equities()
 
-print("Saved figures/coverage.png")
+print(equities.round({"cost": 2, "weight": 3}))
+print("Total cost:", round(equities["cost"].sum(), 2))
