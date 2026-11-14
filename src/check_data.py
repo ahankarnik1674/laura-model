@@ -1,8 +1,8 @@
-"""Check the equity holdings and their weights."""
+"""Check how each deposit is split between bonds and growth."""
 
-from growth import load_equities
+from funding import funding_split
 
-equities = load_equities()
+split = funding_split()
 
-print(equities.round({"cost": 2, "weight": 3}))
-print("Total cost:", round(equities["cost"].sum(), 2))
+for name, value in split.items():  # go through each label and its number
+    print(f"{name}: {value:,.2f}")
