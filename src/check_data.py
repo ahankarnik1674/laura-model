@@ -1,9 +1,9 @@
-#Quick check that the Ken French factor file loads correctly.
+"""Check that the bond file loads and the totals look right."""
 
-from loaders import load_french
+from reserve import load_bonds
 
-factors = load_french("F-F_Research_Data_Factors.csv")
+bonds = load_bonds()
 
-print(factors.head())
-print(factors.tail())
-print(factors.shape)
+print(bonds[["symbol", "maturity", "quantity", "face", "cost"]])
+print("Total face:", bonds["face"].sum())
+print("Total cost:", round(bonds["cost"].sum(), 2))
