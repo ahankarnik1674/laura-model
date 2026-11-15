@@ -1,4 +1,4 @@
-﻿"""Scratch driver: runs the pieces built so far and prints the results."""
+"""Scratch driver: runs the pieces built so far and prints the results."""
 
 import numpy as np
 
