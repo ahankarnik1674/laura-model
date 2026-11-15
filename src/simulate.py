@@ -73,3 +73,13 @@ def replay_full(stock_returns, cash_returns, deposit_2027, deposit_2028, pledge,
         retained = value * (1 - pledge)        # what is left after the pledge
         results.append(run_payout(stock_returns[payout], cash_returns[payout], retained, gaps))
     return np.array(results)
+
+def find_pledge(stock_returns, cash_returns, deposit_2027, deposit_2028, gaps, tolerance):
+    """Largest pledge (in 1% steps, up to 75%) whose shortfall rate stays within tolerance."""
+    best = 0.0
+    for percent in range(0, 76):
+        pledge = percent / 100
+        unpaid = replay_full(stock_returns, cash_returns, deposit_2027, deposit_2028, pledge, gaps)
+        if (unpaid > 0).mean() <= tolerance:    # still safe enough, so keep it
+            best = pledge
+    return best
