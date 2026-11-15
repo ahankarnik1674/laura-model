@@ -7,3 +7,8 @@ def load_equities():
     equities["cost"] = equities["shares"] * equities["price_paid"]
     equities["weight"] = equities["cost"] / equities["cost"].sum()
     return equities
+
+def cost_weights():
+    """Each holding's share of the growth sleeve at cost, as a dict {ticker: weight}."""
+    equities = load_equities()
+    return dict(zip(equities["ticker"], equities["weight"]))
